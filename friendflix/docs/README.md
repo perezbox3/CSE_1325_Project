@@ -1,309 +1,260 @@
-FriendFlix
-Project Overview
+# FriendFlix
 
-FriendFlix is a terminal-based Java application that simulates a small video rental store with built-in ratings and reviews.
-Users can create accounts, browse from a curated list of movies, rate them by category, and leave reviews. The program calculates averages for each movie and lets users see whether the “top 100” truly deserve their spot.
+## Project Overview
+FriendFlix is a terminal-based Java application that simulates a small video rental store with built-in ratings and reviews.  
+Users can create accounts, browse from a curated list of movies, rate them by category, and leave reviews.  
+The program calculates averages for each movie and lets users see whether the “top 100” truly deserve their spot.
 
 The system includes:
+- User authentication (signup/login/logout)
+- Movie list browsing and multi-category rating
+- Review system with stored user feedback
+- Simple statistics and averages
 
-User authentication (signup/login/logout)
+---
 
-Movie list browsing and multi-category rating
+## Features
+- **User Authentication** – Create accounts, log in, and log out.
+- **Movie Database** – Display and search through 100 curated movies.
+- **Rating System** – Rate movies by acting, direction, music, and overall enjoyment.
+- **Reviews** – Write and view reviews left by other users.
+- **Statistics** – Show per-category averages and top-rated movies.
+- **Data Persistence** – All user, movie, and review data saved to `.txt` files.
 
-Review system with stored user feedback
+---
 
-Simple statistics and averages
+## Recommended Class and Method Structure
 
-Features
-
-User Authentication – Create accounts, log in, and log out.
-
-Movie Database – Display and search through 100 curated movies.
-
-Rating System – Rate movies by acting, direction, music, and overall enjoyment.
-
-Reviews – Write and view reviews left by other users.
-
-Statistics – Show per-category averages and top-rated movies.
-
-Data Persistence – All user, movie, and review data saved to .txt files.
-
-Recommended Class and Method Structure
-🧍 User.java
-
+### User.java
 Represents one user in the system.
 
-Fields
+**Fields**
+- String username
+- String passwordHash
+- Set<Integer> likedMovieIds
+- Set<Integer> dislikedMovieIds
 
-String username
+**Main Methods**
+- getUsername()
+- getPasswordHash()
+- likeMovie(int movieId)
+- dislikeMovie(int movieId)
+- hasLiked(int movieId)
+- hasDisliked(int movieId)
 
-String passwordHash
+**Purpose**
+Stores personal data and like/dislike interactions.  
+No file I/O in this class.
 
-Set<Integer> likedMovieIds
+---
 
-Set<Integer> dislikedMovieIds
-
-Main Methods
-
-getUsername()
-
-getPasswordHash()
-
-likeMovie(int movieId)
-
-dislikeMovie(int movieId)
-
-hasLiked(int movieId)
-
-hasDisliked(int movieId)
-
-Purpose
-Stores personal data and like/dislike interactions. Simple object model — no file I/O here.
-
-🔐 UserManager.java
-
+### UserManager.java
 Handles user authentication and persistence.
 
-Fields
+**Fields**
+- String filePath
+- Map<String, User> usersByName
 
-String filePath
+**Main Methods**
+- load() – Reads user data from users.txt
+- save() – Writes user data to file
+- signup(String username, String password) – Registers a new user
+- login(String username, String password) – Authenticates user
+- recordLike(User user, int movieId)
+- recordDislike(User user, int movieId)
 
-Map<String, User> usersByName
-
-Main Methods
-
-load() – Reads all user data from users.txt.
-
-save() – Writes current user data to file.
-
-signup(String username, String password) – Registers a new user if available.
-
-login(String username, String password) – Authenticates and returns a User object.
-
-recordLike(User user, int movieId) – Adds movie to user’s liked list.
-
-recordDislike(User user, int movieId) – Adds movie to disliked list.
-
-Purpose
+**Purpose**
 Manages account creation, authentication, and persistence to data/users.txt.
 
-🎬 Movie.java
+---
 
+### Movie.java
 Represents one movie and its accumulated ratings.
 
-Fields
+**Fields**
+- int id
+- String title
+- String description
+- int actingSum, actingCount
+- int directionSum, directionCount
+- int musicSum, musicCount
+- int overallSum, overallCount
 
-int id
+**Main Methods**
+- addRating(String category, int score)
+- getAverage(String category)
+- getCompositeAverage()
+- getTitle(), getId(), getDescription()
 
-String title
-
-String description
-
-int actingSum, actingCount
-
-int directionSum, directionCount
-
-int musicSum, musicCount
-
-int overallSum, overallCount
-
-Main Methods
-
-addRating(String category, int score) – Adds a new score for a category.
-
-getAverage(String category) – Returns the average score for a category.
-
-getCompositeAverage() – Returns overall movie average (mean of categories).
-
-getTitle(), getId(), getDescription()
-
-Purpose
+**Purpose**
 Stores all movie rating data and provides access to calculated averages.
 
-🎞️ MovieManager.java
+---
 
+### MovieManager.java
 Maintains the list of all movies, handles searching and rating.
 
-Fields
+**Fields**
+- String filePath
+- Map<Integer, Movie> byId
+- List<Movie> allMovies
 
-String filePath
+**Main Methods**
+- load() – Reads movies from movies.txt
+- save() – Saves updated movie data
+- listAll()
+- findById(int id)
+- searchByTitle(String query)
+- addRating(int movieId, String category, int score)
+- topByComposite(int count)
+- globalAverageForCategory(String category)
 
-Map<Integer, Movie> byId
+**Purpose**
+Controls all movie-related logic such as listing, rating, and statistics.
 
-List<Movie> allMovies
+---
 
-Main Methods
-
-load() – Reads all movie data from movies.txt.
-
-save() – Saves updated rating data back to file.
-
-listAll() – Returns a list of all movies.
-
-findById(int id) – Returns a movie object by ID.
-
-searchByTitle(String query) – Finds movies matching part of a title.
-
-addRating(int movieId, String category, int score) – Updates movie ratings.
-
-topByComposite(int count) – Returns top-rated movies.
-
-globalAverageForCategory(String category) – Returns average for all movies in a category.
-
-Purpose
-Central controller for all movie-related operations.
-Connects directly with Main for listing, rating, and statistics.
-
-📝 Review.java
-
+### Review.java
 Represents a user review for a movie.
 
-Fields
+**Fields**
+- int movieId
+- String username
+- String text
+- long timestamp
 
-int movieId
+**Main Methods**
+- getMovieId()
+- getUsername()
+- getText()
+- getTimestamp()
 
-String username
-
-String text
-
-long timestamp
-
-Main Methods
-
-getMovieId()
-
-getUsername()
-
-getText()
-
-getTimestamp()
-
-Purpose
+**Purpose**
 Simple data holder for reviews. Each review is tied to one movie and one user.
 
-💬 ReviewManager.java
+---
 
+### ReviewManager.java
 Handles all review storage, retrieval, and persistence.
 
-Fields
+**Fields**
+- String filePath
+- Map<Integer, List<Review>> reviewsByMovie
 
-String filePath
+**Main Methods**
+- load() – Reads reviews from reviews.txt
+- save() – Saves reviews to file
+- addReview(int movieId, String username, String text)
+- getReviewsForMovie(int movieId)
+- getReviewCountForMovie(int movieId)
 
-Map<Integer, List<Review>> reviewsByMovie
+**Purpose**
+Stores and retrieves user reviews for each movie.
 
-Main Methods
+---
 
-load() – Reads reviews from reviews.txt.
+### Main.java
+The entry point that ties everything together with a menu-driven interface.
 
-save() – Saves all reviews to file.
+**Fields**
+- Scanner in
+- UserManager userManager
+- MovieManager movieManager
+- ReviewManager reviewManager
+- User currentUser
 
-addReview(int movieId, String username, String text) – Adds a new review.
+**Main Methods**
+- run() – Initializes managers, loads data, and starts the main loop
+- mainMenu() – Displays options based on login state
+- handleChoice(int choice) – Routes user input to correct module
+- loadAllData(), saveAllData()
+- promptLogin(), promptSignup()
+- promptRateMovie(), promptReview()
+- showTopMovies(), showStats()
 
-getReviewsForMovie(int movieId) – Returns all reviews for a specific movie.
+**Purpose**
+Provides the console menu interface and directs flow between managers.  
+Example:
+Main -> UserManager.signup()
+Main -> MovieManager.addRating()
+Main -> ReviewManager.addReview()
 
-getReviewCountForMovie(int movieId) – Returns number of reviews for a movie.
+yaml
+Copy code
 
-Purpose
-Handles reading/writing user feedback and making it displayable by movie.
+---
 
-🧠 Main.java
+## Data Storage Format
 
-The entry point that ties everything together through a menu-driven interface.
-
-Fields
-
-Scanner in
-
-UserManager userManager
-
-MovieManager movieManager
-
-ReviewManager reviewManager
-
-User currentUser
-
-Main Methods
-
-run() – Initializes managers, loads data, starts main loop.
-
-mainMenu() – Shows options depending on login status.
-
-handleChoice(int choice) – Routes user input to correct module.
-
-loadAllData() / saveAllData() – Coordinates data persistence.
-
-promptLogin(), promptSignup() – User authentication options.
-
-promptRateMovie(), promptReview(), showTopMovies(), showStats() – User actions.
-
-Purpose
-Provides the UI loop (text menu). Main calls into each manager to perform actions.
-Example flow:
-
-Main → UserManager.signup()
-Main → MovieManager.addRating()
-Main → ReviewManager.addReview()
-
-Data Storage Format
-
-users.txt
-
+**users.txt**
 username|passwordHash|likedIds|dislikedIds
 alice|5f4dcc3b5aa765d61d8327deb882cf99|1,5|2
 
+markdown
+Copy code
 
-movies.txt
-
+**movies.txt**
 id|title|description|aSum|aCnt|dSum|dCnt|mSum|mCnt|oSum|oCnt
 1|The Matrix|Sci-fi classic|40|5|39|5|41|5|42|5
 
+markdown
+Copy code
 
-reviews.txt
-
+**reviews.txt**
 movieId|username|timestamp|reviewText
 1|alice|1730060000|Loved the visuals!
 
-Integration Flow
+yaml
+Copy code
 
-Main.java loads all managers and data files.
+---
 
-User logs in or signs up through UserManager.
+## Integration Flow
+1. Main loads all managers and data files.  
+2. User logs in or signs up via UserManager.  
+3. User selects a movie from MovieManager to:
+   - Rate it (addRating)
+   - Write a review (ReviewManager.addReview)
+   - View averages and reviews (MovieManager + ReviewManager)
+4. Likes/dislikes are updated through UserManager.
+5. On exit, Main saves data for all managers.
 
-User selects a movie (via MovieManager) to:
+---
 
-Rate it (addRating())
-
-Write a review (ReviewManager.addReview())
-
-View averages and reviews (MovieManager + ReviewManager)
-
-Likes/dislikes stored via UserManager.
-
-On program exit, Main calls save() on all managers to update files.
-
-Compilation & Execution
-
-From within the src/ directory:
-
+## Compilation & Execution
+From within the `src/` directory:
 javac *.java
 java Main
 
-Recommended Design Notes
+yaml
+Copy code
 
-Keep one instance of each manager shared by Main.
+---
 
-No subclasses needed yet — each file handles one responsibility.
+## Summary of Responsibilities
 
-Use |-separated text files for easy reading and writing.
+| File | Purpose | Key Methods |
+|------|----------|-------------|
+| Main.java | Menu, navigation, integration | run(), mainMenu(), handleChoice() |
+| User.java | Stores user info | likeMovie(), dislikeMovie() |
+| UserManager.java | Handles signup/login | signup(), login(), save() |
+| Movie.java | Movie model | addRating(), getCompositeAverage() |
+| MovieManager.java | Manages movie list | listAll(), searchByTitle(), addRating() |
+| Review.java | Review model | getMovieId(), getText() |
+| ReviewManager.java | Handles reviews | addReview(), getReviewsForMovie() |
 
-Add subclasses or extra layers (e.g., AdminUser) later if complexity grows.
+---
 
-Summary of Responsibilities
-File	Purpose	Key Methods
-Main.java	Menu, navigation, integration	run(), mainMenu(), handleChoice()
-User.java	Stores user info	likeMovie(), dislikeMovie()
-UserManager.java	Handles signup/login and persistence	signup(), login(), save()
-Movie.java	Movie model	addRating(), getCompositeAverage()
-MovieManager.java	Manages movie list and ratings	listAll(), searchByTitle(), addRating()
-Review.java	Review model	getMovieId(), getText()
-ReviewManager.java	Handles storing and displaying reviews	addReview(), getReviewsForMovie()
+## Development Workflow
+1. Person 1 builds User management (signup/login/logout).
+2. Person 2 builds Movie system (list/search/rate/averages).
+3. Person 3 builds Review system (add/view) and statistics.
+4. Integrate all modules into Main.java.
+
+---
+
+## Notes
+- One instance of each manager shared by Main.
+- No subclasses needed yet; one class per concept.
+- Simple `|`-separated `.txt` files for storage.
+- Add advanced patterns (like inheritance or interfaces) only if required later.
