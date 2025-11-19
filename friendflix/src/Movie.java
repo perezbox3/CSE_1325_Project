@@ -118,28 +118,25 @@ public class Movie {
             case "acting": 
             //Prevents dividing by 0
             if(actingCount == 0){
-                actingSum = 0.0;
+                return 0.0;
             }
             else{
-            actingSum = actingSum/actingCount;
+            return actingSum/actingCount;
             }
-            return actingSum;
             case "direction":
             if(directionCount == 0){
-                directionSum = 0.0;
+                return 0.0;
             }
             else{
-            directionSum = directionSum/directionCount;
+            return directionSum/directionCount;
             }
-            return directionSum;
             case "music":
             if(musicCount == 0){
-                musicSum = 0.0;
+                return 0.0;
             }
             else{
-            musicSum = musicSum/musicCount;
+            return musicSum/musicCount;
             }
-            return musicSum;
             default:
             System.out.println(category + " category does not exist. Cannot get average.");
             return 0.0;
