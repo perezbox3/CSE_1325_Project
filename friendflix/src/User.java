@@ -105,6 +105,23 @@ public class User
 
     }
 
+    public boolean changeEmail(String attemptedPassword, String email)
+    {
+        if (!verifyPassword(attemptedPassword, this.password))
+        {
+            return false;
+        }
+        try 
+        {
+            setEmail(email);
+            return true;
+        } 
+        catch (IllegalArgumentException e) 
+        {
+            return false;
+        }
+    }
+
     private boolean  isValidEmail(String email)
     {
   
@@ -126,5 +143,19 @@ public class User
         setUsername(username);
         setPassword(password);
         setEmail(email);
+    }
+
+    public User(String username, String password, String email, boolean isHashed)
+    {
+        setUsername(username);
+        setEmail(email);
+        if(isHashed)
+        {
+            this.password = password;
+        } 
+        else 
+        {
+            setPassword(password);
+        }
     }
 }
