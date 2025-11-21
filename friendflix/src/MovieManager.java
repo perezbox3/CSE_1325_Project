@@ -25,7 +25,7 @@ public class MovieManager{
             byId.clear();
             allMovies.clear();
             while((line = reader.readLine()) != null){
-                String parts[] = line.split("|");
+                String parts[] = line.split("\\|");
                 if(parts.length >= 4){
                     
                     int id = Integer.parseInt(parts[0]);
@@ -64,7 +64,7 @@ public class MovieManager{
         else{
             System.out.println("-----------ALL MOVIES-----------");
             for (Movie movie : allMovies) {
-                System.out.println(movie.toString());
+                System.out.println(movie.getId() +" | "+ movie.toString());
                 
             }
         System.out.println("--------------------------------");
@@ -78,7 +78,7 @@ public class MovieManager{
     public List<Movie> searchByTitle(String query){
         List<Movie> foundMovies = new ArrayList<>();
         String lcQuery = query.toLowerCase();
-        for (Movie movie : foundMovies) {
+        for (Movie movie : allMovies) {
             if(movie.getTitle().toLowerCase().contains(lcQuery)){
                 foundMovies.add(movie);
             }

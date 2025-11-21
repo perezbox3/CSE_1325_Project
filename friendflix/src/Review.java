@@ -11,7 +11,15 @@ public class Review
 	    {
 	        this.movieId = movieId;
 	        this.username = username;
-	        this.text = text;
+			if(text.length() >= 5)
+			{
+				this.text = text;
+			} 
+			else 
+			{
+				throw new IllegalArgumentException("Review must consist of at least 5 characters.");
+			}
+
 	        this.timestamp = timestamp;
 	    }
 	

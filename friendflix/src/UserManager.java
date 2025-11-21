@@ -5,7 +5,7 @@ public class UserManager
 {
 
     private Map<String, User> users;
-    private static final String USER_FILE = "data/users.txt";
+    private static final String USER_FILE = "../data/users.txt";
     private User currentUser;
 
     public UserManager()
