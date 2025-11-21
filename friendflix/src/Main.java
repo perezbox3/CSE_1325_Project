@@ -33,7 +33,10 @@ public class Main
             }
             System.out.println("10. Show Top Movies by Composite Score");
             System.out.println("11. Show Average for Category");
-            System.out.println("12. Logout");
+            if(userManager.isLoggedIn())
+            {
+                System.out.println("12. Logout");
+            }
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
             int choice = input.nextInt();
